@@ -15,7 +15,8 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from typing import List
 from langchain_core.documents import Document
 from langchain_community.embeddings.sentence_transformer import SentenceTransformerEmbeddings
-from langchain.vectorstores import Chroma
+# from langchain.vectorstores import Chroma
+from langchain_community.vectorstores import Chroma
 
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.schema.runnable import RunnablePassthrough
@@ -71,16 +72,6 @@ vectorstore = Chroma.from_documents(
 )
 print("Vector store created and persisted to './chroma_db'")
 
-
-# query = "When was Acme Corp founded?"
-# search_results = vectorstore.similarity_search(query, k=2)
-# print(f"\nTop 2 most relevant chunks for the query: '{query}'\n")
-# for i, result in enumerate(search_results, 1):
-#     print(f"Result {i}:")
-#     print(f"Source: {result.metadata.get('source', 'Unknown')}")
-#     print(f"Content: {result.page_content}")
-#     # print()
-
 retriever = vectorstore.as_retriever(search_kwargs={"k": 2})
 # retriever_results = retriever.invoke("When was GreenGrow Innovations founded?")
 # print(retriever_results)
@@ -106,7 +97,16 @@ rag_chain = (
 )
 
 
-question = "When was Acme Corp founded?"
-response = rag_chain.invoke(question)
-print(f"Question: {question}")
-print(f"Answer: {response}")
+# question = "What is the Acme When was Acme Corp founded?"
+# response = rag_chain.invoke(question)
+# print(f"Question: {question}")
+# print(f"Answer: {response}")
+
+while(True):
+    query = input()
+    if query == 'exit':
+        break
+    else:
+        response = rag_chain.invoke(query)
+        print(f"Question: {query}")
+        print(f"Answer: {response}")
